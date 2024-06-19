@@ -2,32 +2,78 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+html {
+  font-size: 100%; /* 1rem = 16px by default */
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  font-size: 1.5rem; /* 24px */
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+:root {
+  --font-size-small: 1.5rem; /* 24px */
+  --font-size-medium: 2rem; /* 32px */
+  --font-size-large: 2.5rem; /* 40px */
+  --font-size-xlarge: 3rem; /* 48px */
+  --font-size-xxlarge: 4rem; /* 64px */
+
+  --border-thickness-small: 3px;
+  --border-thickness-medium: 4px;
+  --border-thickness-large: 5px;
+  --border-thickness-xlarge: 6px;
+  --border-thickness-xxlarge: 8px;
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 87.5%; /* 1rem = 14px */
   }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 93.75%; /* 1rem = 15px */
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 100%; /* 1rem = 16px */
+  }
+}
+
+h1 {
+  font-size: var(--font-size-xxlarge);
+}
+
+h2.phrase-text {
+  font-size: var(--font-size-medium);
+  text-align: left;
+}
+
+h3 {
+  font-size: var(--font-size-large);
+}
+
+p, button {
+  font-size: var(--font-size-medium);
+}
+
+input.phrase-text, textarea.phrase-text {
+  font-size: var(--font-size-medium);
+  height: auto;
+  min-height: 40px;
+  display: block;
+  width: 100%;
+  resize: none; /* Disable resizing for better control */
+  overflow: hidden; /* Ensure content fits within the box */
+  line-height: 1.5; /* Ensure proper line height for readability */
+  white-space: pre-wrap; /* Ensure text wraps within the box */
+  text-align: left;
+  border: solid transparent;
+}
+
+input.phrase-text.border-danger, textarea.phrase-text.border-danger {
+  border-width: var(--border-thickness-xlarge);
+  border-color: red;
 }
