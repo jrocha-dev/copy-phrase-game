@@ -11,7 +11,7 @@ const getRandomPhrase = (phrases) => {
 
 const CopyPhrase = () => {
   const [phrases] = useState(phrasesData.phrases);
-  const [currentPhrase, setCurrentPhrase] = useState(getRandomPhrase(phrases));
+  const [currentPhrase, setCurrentPhrase] = useState("");
   const [inputValue, setInputValue] = useState("");
   const [message, setMessage] = useState("");
   const [hearts, setHearts] = useState(6);
@@ -24,11 +24,18 @@ const CopyPhrase = () => {
   const inputRef = useRef(null);
   const messageRef = useRef(null);
   const phraseRef = useRef(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   // Set currentPhrase only after the component mounts
   useEffect(() => {
-    setCurrentPhrase(getRandomPhrase(phrases));
-  }, [phrases]);
+    if (isMounted) {
+      setCurrentPhrase(getRandomPhrase(phrases));
+    }
+  }, [isMounted, phrases]);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const startTimer = useCallback(() => {
     const id = setInterval(() => {
@@ -57,9 +64,11 @@ const CopyPhrase = () => {
   }, [phrases, intervalId, startTimer]);
 
   useEffect(() => {
-    startTimer();
-    return () => clearInterval(intervalId);
-  }, [startTimer, intervalId]);
+    if (isMounted) {
+      startTimer();
+      return () => clearInterval(intervalId);
+    }
+  }, [startTimer, intervalId, isMounted]);
 
   useEffect(() => {
     if (timer === 0) {
@@ -74,7 +83,7 @@ const CopyPhrase = () => {
     } else if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [message, inputValue, currentPhrase]);
+  }, [message]);
 
   useEffect(() => {
     if (hearts <= 0) {
@@ -106,7 +115,7 @@ const CopyPhrase = () => {
     if (value === currentPhrase) handleCorrectPhrase();
   };
 
-  const handleCorrectPhrase = (value) => {
+  const handleCorrectPhrase = () => {
     const remainingTimeBonus = (timer + 1) * currentPhrase.length;
     setScore((prevScore) => prevScore + remainingTimeBonus);
     setHearts((prevHearts) => Math.min(prevHearts + 1, 20));
