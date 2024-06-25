@@ -17,7 +17,7 @@ const CopyPhrase = () => {
   const [hearts, setHearts] = useState(6);
   const [timer, setTimer] = useState(300);
   const [progress, setProgress] = useState(0);
-  const [intervalId, setIntervalId] = useState(null);
+  const intervalIdRef = useRef(null);
   const [errorOccurred, setErrorOccurred] = useState(false);
   const [score, setScore] = useState(0);
   const [consecutivePoints, setConsecutivePoints] = useState(0);
@@ -26,6 +26,10 @@ const CopyPhrase = () => {
   const phraseRef = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Set currentPhrase only after the component mounts
   useEffect(() => {
     if (isMounted) {
@@ -33,15 +37,11 @@ const CopyPhrase = () => {
     }
   }, [isMounted, phrases]);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const startTimer = useCallback(() => {
     const id = setInterval(() => {
       setTimer((prev) => (prev > 0 ? prev - 1 : prev));
     }, 1000);
-    setIntervalId(id);
+    intervalIdRef.current = id;
   }, []);
 
   const resetGame = useCallback(() => {
@@ -53,29 +53,29 @@ const CopyPhrase = () => {
     setErrorOccurred(false);
     setConsecutivePoints(0);
 
-    if (intervalId) {
-      clearInterval(intervalId);
+    if (intervalIdRef.current) {
+      clearInterval(intervalIdRef.current);
     }
 
     startTimer();
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [phrases, intervalId, startTimer]);
+  }, [phrases, startTimer]);
 
   useEffect(() => {
     if (isMounted) {
       startTimer();
-      return () => clearInterval(intervalId);
+      return () => clearInterval(intervalIdRef.current);
     }
-  }, [startTimer, intervalId, isMounted]);
+  }, [startTimer, isMounted]);
 
   useEffect(() => {
     if (timer === 0) {
-      clearInterval(intervalId);
+      clearInterval(intervalIdRef.current);
       setMessage("Time's up!");
     }
-  }, [timer, intervalId]);
+  }, [timer]);
 
   useEffect(() => {
     if (message === "Game Over! Try again." && messageRef.current) {
