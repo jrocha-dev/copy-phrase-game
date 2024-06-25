@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "export",
-  basePath: "/copy-phrase-game",
+  basePath: "",
   trailingSlash: true,
 };
 
