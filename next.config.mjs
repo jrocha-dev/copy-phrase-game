@@ -10,6 +10,8 @@ const nextConfig = {
   basePath: "",
   assetPrefix: isProd
     ? "https://copy-phrase.computadordoescritorio.com.br"
-    : "/",
+    : "",
   trailingSlash: true,
 };
+
+export default nextConfig;
