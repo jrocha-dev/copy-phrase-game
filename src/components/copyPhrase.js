@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import phrasesData from "./phrases.json";
+import phrasesData from "../phrases.json";
 import HUD from "./HUD";
 
 const getRandomPhrase = (phrases) => {
