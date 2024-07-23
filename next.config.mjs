@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig = {
   output: "export",
   images: {
@@ -6,7 +8,8 @@ const nextConfig = {
     path: "",
   },
   basePath: "",
-  assetPrefix: "/",
+  assetPrefix: isProd
+    ? "https://copy-phrase.computadordoescritorio.com.br"
+    : "/",
+  trailingSlash: true,
 };
-
-export default nextConfig;
